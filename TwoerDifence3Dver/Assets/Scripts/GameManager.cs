@@ -17,15 +17,12 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(PauseGame());
-        
+        StartCoroutine(EnemyAttackerSpawnTime());
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            EAttackerSpawn();
-        }
+
     }
 
     void Awake()
@@ -47,7 +44,7 @@ public class GameManager : MonoBehaviour
 
         float remainingTime = delayTime; //カウントダウン初期値設定
 
-        while(remainingTime > 0)
+        while (remainingTime > 0)
         {
             countdownText.text = Mathf.Ceil(remainingTime).ToString(); //テキスト更新
 
@@ -55,7 +52,7 @@ public class GameManager : MonoBehaviour
 
             remainingTime--; //残り時間を減らす
         }
-     
+
         countdownText.text = "Go!";
         yield return new WaitForSecondsRealtime(0.5f);
         countdownText.text = ""; //テキストを消す
@@ -75,5 +72,16 @@ public class GameManager : MonoBehaviour
         Vector3 enemyAttackerSpawnPosition = new Vector3(6.6f, 17.651f, -19.67f);
         //インスタンス化して生成
         GameObject enemyAttackerInstance = Instantiate(eAttacker, enemyAttackerSpawnPosition, Quaternion.Euler(0f, 180f, 0f));
+    }
+
+    public IEnumerator EnemyAttackerSpawnTime()
+    {
+        while (true)
+        {
+            EAttackerSpawn();
+            yield return new WaitForSeconds(15f);
+
+        }
+
     }
 }

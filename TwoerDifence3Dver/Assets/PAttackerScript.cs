@@ -14,8 +14,10 @@ public class PAttackerScript : MonoBehaviour
     public Animator animator;                  // Animatorコンポーネント
     public int playerAttackerHp = 100;         // プレイヤーアタッカーのHP
     public int playerAttackerPower = 10;       // プレイヤーアタッカーの攻撃力
-    private float damageInterval = 1.0f;  // **ダメージを受ける間隔（秒）**
-    private float lastDamageTime = 0f;    // **最後にダメージを受けた時間**
+    private float damageInterval = 1.0f;       // **ダメージを受ける間隔（秒）**
+    private float lastDamageTime = 0f;         // **最後にダメージを受けた時間**
+
+    public EAttackerScript eAttackerScript;
 
     void Start()
     {
@@ -88,19 +90,15 @@ public class PAttackerScript : MonoBehaviour
 
     void PATakeDamage(int damage)
     {
+        playerAttackerHp -= damage;
         //Debug.Log("Player残りHP:" + playerAttackerHp);
-        // **一定時間ごとにダメージを与える**
-        if (Time.time - lastDamageTime >= damageInterval)
-        {
-            playerAttackerHp -= damage;
-            lastDamageTime = Time.time; // **ダメージを受けた時間を更新**
-        }
         if (playerAttackerHp <= 0)
         {
             Die();
             isMove = false; // isMoveをfalse
         }
     }
+
 
     public void Die()
     {
@@ -111,16 +109,21 @@ public class PAttackerScript : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            EAttackerScript eAttackerScript = other.GetComponent<EAttackerScript>();
+            eAttackerScript = other.GetComponent<EAttackerScript>();
 
             isPaused = true;  // 移動を一時停止
             animator.SetBool("isWalk", false);  //移動しているとき歩行アニメーションを無効
             animator.SetBool("isAttack", true); //移動しているとき攻撃アニメーションを実行
             animator.SetBool("isIdel", false);  //移動しているとき待機アニメーションを無効
 
-            PATakeDamage(eAttackerScript.enemyAttackerPower);
+            // **一定時間ごとにダメージを与える**
+            if (Time.time - lastDamageTime >= damageInterval)
+            {
+                PATakeDamage(eAttackerScript.enemyAttackerPower);
+                lastDamageTime = Time.time; // **ダメージを受けた時間を更新**
+            }
 
-            if (playerAttackerHp <= 0)
+            if(playerAttackerHp <= 0)
             {
                 eAttackerScript.EAResumeMovement();
             }
@@ -137,10 +140,6 @@ public class PAttackerScript : MonoBehaviour
             animator.SetBool("isAttack", false);   //移動しているとき歩行アニメーションを無効
             animator.SetBool("isIdel", true);      //移動しているとき待機アニメーションを実行
 
-            if (playerAttackerHp <= 0)
-            {
-                PAResumeMovement();
-            }
         }
     }
 
