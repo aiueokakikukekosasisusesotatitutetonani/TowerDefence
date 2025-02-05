@@ -7,22 +7,34 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance; //シングルトン
 
-    public float delayTime = 3.0f;
-    public Text countdownText; //UIテキスト
+    public float delayTime = 3.0f;  　//カウントダウン
+    public Text countdownText;     　 //UIテキスト
+    public Animator gameOverAnim;  　 //GameOver時のアニメーター
+    public Animator gameClearAnim;    //GameClear時のアニメーター
 
     public GameObject pAttacker; //味方（attacker）
+    public GameObject pTank;     //味方（tanker）
     public GameObject eAttacker; //敵　 (attacker)
+    public GameObject eTank;     //敵   (tanker)
 
-    [SerializeField] private UIManager uIManager;
+    [SerializeField] private PlayerTower playerTower;
+    [SerializeField] private EnemyTower enemyTower;
     void Start()
     {
+        gameOverAnim = GameObject.Find("GameOverUI").GetComponent<Animator>();
+
         StartCoroutine(PauseGame());
-        StartCoroutine(EnemyAttackerSpawnTime());
+        //StartCoroutine(EnemyAttackerSpawnTime());
+        //EAttackerSpawn();
+        StartCoroutine(EnemyTankSpawnTime());
+        //ETankSpawn();
+
     }
 
     void Update()
     {
-
+        GameOver();
+        GameClear();
     }
 
     void Awake()
@@ -61,11 +73,45 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1; // 時間を再開
     }
 
+    public void GameOver()
+    {
+        if(playerTower.towerHp <= 0)
+        {
+            gameOverAnim.SetBool("isGameOver", true);
+            StartCoroutine(StopGame());         
+        }
+        
+    }
+
+    public void GameClear()
+    {
+        if(enemyTower.towerHp <= 0)
+        {
+            gameClearAnim.SetBool("isGameClear", true);
+            StartCoroutine(StopGame());
+        }
+    }
+
+    public IEnumerator StopGame()
+    {
+        yield return new WaitForSecondsRealtime(2f);
+        Time.timeScale = 0;
+    }
+
+
+
     public void PAttackerOnClick() //PlayerAttackerを出現させるメソッド
     {
         Vector3 playerAttackerSpawnPosition = new Vector3(-41.4f, 17.651f, -19.67f);
         //インスタンス化して生成
         GameObject playerAttackerInstance = Instantiate(pAttacker, playerAttackerSpawnPosition, Quaternion.Euler(0f, 180f, 0f));
+    }
+
+    public void PTTankOnClick()   //PlayerTankを出現させるメソッド
+    {
+        Vector3 playerTankSpawnPosition = new Vector3(-41.34f, 17.65f, -19.28f);
+        //インスタンス化して生成
+        GameObject playerTankInstance = Instantiate(pTank, playerTankSpawnPosition, Quaternion.Euler(0f, 180f, 0f));
     }
     public void EAttackerSpawn() //EnemyAttackerを出現させるメソッド
     {
@@ -74,14 +120,28 @@ public class GameManager : MonoBehaviour
         GameObject enemyAttackerInstance = Instantiate(eAttacker, enemyAttackerSpawnPosition, Quaternion.Euler(0f, 180f, 0f));
     }
 
+    public void ETankSpawn()
+    {
+        Vector3 enemyTankSpawnPosition = new Vector3(6.6f, 17.651f, -19.67f);
+        //インスタンス化して生成
+        GameObject enemyTankInstance = Instantiate(eTank, enemyTankSpawnPosition, Quaternion.Euler(0f, 180f, 0f));
+    }
+
     public IEnumerator EnemyAttackerSpawnTime()
     {
         while (true)
         {
             EAttackerSpawn();
             yield return new WaitForSeconds(15f);
-
         }
+    }
 
+    public IEnumerator EnemyTankSpawnTime()
+    {
+        while (true)
+        {
+            ETankSpawn();
+            yield return new WaitForSeconds(15f);
+        }
     }
 }

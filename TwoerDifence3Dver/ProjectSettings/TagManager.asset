@@ -12,6 +12,13 @@ TagManager:
   - AttackerEnemy
   - TankEnemy
   - WizardEnemy
+  - PlayerTower
+  - EnemyTower
+  - FxTemporaire
+  - APlayer
+  - TPlayer
+  - AEnemy
+  - TEnemy
   layers:
   - Default
   - TransparentFX

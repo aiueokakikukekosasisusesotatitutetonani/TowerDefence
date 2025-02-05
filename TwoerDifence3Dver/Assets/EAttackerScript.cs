@@ -15,15 +15,16 @@ public class EAttackerScript : MonoBehaviour
     public int enemyAttackerHp = 100;          // エネミーアタッカーのHP
     public int enemyAttackerPower = 10;        // エネミーアタッカーの攻撃力
     private float damageInterval = 1.0f;       // **ダメージを受ける間隔（秒）**
-    private float lastDamageTime = 0f;         // **最後にダメージを受けた時間**
+
+    private Coroutine damageCoroutine; // ダメージ処理のコルーチンを保持
 
     public PAttackerScript pAttackerScript;          // playerのスクリプト
+    public PTankScript pTankScript;                  // tankのスクリプト
 
     void Start()
     {
         animator = GetComponent<Animator>(); // animatorのコンポーネントを取得
         startPosition = transform.position;  // 初期位置を設定
-        isMove = true;                       // isMoveをtrueにしておく
     }
 
     void Update()
@@ -93,7 +94,9 @@ public class EAttackerScript : MonoBehaviour
     {
         enemyAttackerHp -= damage;
 
-        if (enemyAttackerHp < 0)
+        //Debug.Log(enemyAttackerHp);
+
+        if (enemyAttackerHp <= 0)
         {
             Die();
             isMove = false;
@@ -102,30 +105,40 @@ public class EAttackerScript : MonoBehaviour
 
     public void Die()
     {
-        Destroy(gameObject);
+        transform.Translate(10f, 0f, 0f);
+        Destroy(gameObject, 1f);
     }
 
-    public void OnTriggerStay(Collider other)
+    public void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("APlayer"))
         {
             pAttackerScript = other.GetComponent<PAttackerScript>();
 
             isPaused = true;  // 移動を一時停止
-            animator.SetBool("isWalk", false);  //移動しているとき歩行アニメーションを無効
-            animator.SetBool("isAttack", true); //移動しているとき攻撃アニメーションを実行
-            animator.SetBool("isIdel", false);  //移動しているとき待機アニメーションを実行
+            animator.SetBool("isWalk", false);  //移動アニメーションを無効
+            animator.SetBool("isAttack", true); //攻撃アニメーションを実行
+            animator.SetBool("isIdel", false);  //待機アニメーションを無効
 
-            // **一定時間ごとにダメージを与える**
-            if (Time.time - lastDamageTime >= damageInterval)
+            // すでにダメージ処理が動いていなければ開始
+            if (damageCoroutine == null)
             {
-                EATakeDamage(pAttackerScript.playerAttackerPower);
-                lastDamageTime = Time.time; // **ダメージを受けた時間を更新**
+                damageCoroutine = StartCoroutine(ADamageOverTime());
             }
+        }
+        else if (other.CompareTag("TPlayer"))
+        {
+            pTankScript = other.GetComponent<PTankScript>();
 
-            if (enemyAttackerHp <= 0)
+            isPaused = true;  // 移動を一時停止
+            animator.SetBool("isWalk", false);  //移動アニメーションを無効
+            animator.SetBool("isAttack", true); //攻撃アニメーションを実行
+            animator.SetBool("isIdel", false);  //待機アニメーションを無効
+
+            // すでにダメージ処理が動いていなければ開始
+            if (damageCoroutine == null)
             {
-                pAttackerScript.PAResumeMovement();
+                damageCoroutine = StartCoroutine(TDamageOverTime());
             }
         }
 
@@ -141,27 +154,79 @@ public class EAttackerScript : MonoBehaviour
             animator.SetBool("isIdel", true);     //移動しているとき待機アニメーションを実行
 
         }
+
+        if (other.CompareTag("PlayerTower"))
+        {
+            isPaused = true;                      //移動を停止
+            animator.SetBool("isWalk", false);    //移動しているとき歩行アニメーションを無効
+            animator.SetBool("isAttack", true);  //移動しているとき攻撃アニメーションを無効
+            animator.SetBool("isIdel", false);     //移動しているとき待機アニメーションを実行
+        }
+    }
+
+    // 一定時間ごとにダメージを受ける Coroutine
+    private IEnumerator ADamageOverTime()  //Attackerに攻撃を受ける
+    {
+        while (enemyAttackerHp > 0) // HPが0になるまでループ
+        {
+            EATakeDamage(pAttackerScript.playerAttackerPower);
+            yield return new WaitForSeconds(damageInterval); // 指定時間待つ
+        }
+
+        // HPが0になったら敵の移動を再開
+        pAttackerScript.PAResumeMovement();
+        damageCoroutine = null; // コルーチンの参照をリセット
+    }
+
+    private IEnumerator TDamageOverTime() //Tankに攻撃を受ける
+    {
+        while(enemyAttackerHp > 0)
+        {
+            EATakeDamage(pTankScript.playerTackPower);
+            yield return new WaitForSeconds(damageInterval); //指定秒数待つ
+        }
+
+        //HPが0になったら敵の移動を再開
+        pTankScript.PTResumeMovement();
+        damageCoroutine = null;
     }
 
     public void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Enemy"))
+        //Debug.Log("OnTriggerExit");
+
+        if (other.CompareTag("APlayer"))
         {
-            EAResumeMovement();
+            // ダメージを受ける Coroutine を停止
+            if (damageCoroutine != null)
+            {
+                StopCoroutine(damageCoroutine);
+                damageCoroutine = null;
+            }
+
+            EAResumeMovement(); // 通常の移動を再開
+        }
+
+        if (other.CompareTag("TPlayer"))
+        {
+            // ダメージを受ける Coroutineを停止
+            if(damageCoroutine != null)
+            {
+                StopCoroutine(damageCoroutine);
+                damageCoroutine = null;
+            }
+
+            EAResumeMovement(); //通常移動を開始
         }
     }
 
     public void EAResumeMovement()
     {
+        //Debug.Log("Enemyの移動再開");
         isPaused = false; // 移動を再開
-        Debug.Log(isPaused);
+        //Debug.Log(isPaused);
         animator.SetBool("isWalk", true);    //移動しているとき歩行アニメーションを実行
         animator.SetBool("isAttack", false); //移動しているとき攻撃アニメーションを無効
         animator.SetBool("isIdel", false);   //移動しているとき待機アニメーションを無効
-    }
-
-    public IEnumerator CurrentTime()
-    {
-        yield return new WaitForSeconds(2f);
     }
 }

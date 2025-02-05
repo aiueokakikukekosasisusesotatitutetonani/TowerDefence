@@ -56,24 +56,33 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\assets\AurynSky\Forest Pack\Scripts\MaterialMover.cs" />
+    <Compile Include="Assets\assets\Map\Forest Pack\Scripts\MaterialMover.cs" />
+    <Compile Include="Assets\PTankScript.cs" />
     <Compile Include="Assets\Scripts\EnemyTrigger.cs" />
     <Compile Include="Assets\Scripts\EnemyParameter.cs" />
-    <Compile Include="Assets\assets\AurynSky\Forest Pack\Scripts\WheelController.cs" />
-    <Compile Include="Assets\Scripts\UIManager.cs" />
-    <Compile Include="Assets\Scripts\Probability.cs" />
+    <Compile Include="Assets\assets\Map\Forest Pack\Scripts\WheelController.cs" />
+    <Compile Include="Assets\Scripts\EnemyTower.cs" />
     <Compile Include="Assets\Scripts\PlayerTrigger.cs" />
     <Compile Include="Assets\PAttackerScript.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
-    <Compile Include="Assets\assets\AurynSky\Forest Pack\Scripts\Rotator.cs" />
+    <Compile Include="Assets\ETankScript.cs" />
+    <Compile Include="Assets\assets\Map\Forest Pack\Scripts\Rotator.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
+    <Compile Include="Assets\Scripts\PlayerTower.cs" />
     <Compile Include="Assets\Scripts\PlayerParameter.cs" />
     <Compile Include="Assets\EAttackerScript.cs" />
-    <Compile Include="Assets\assets\AurynSky\Forest Pack\Scripts\ChestDemo.cs" />
+    <Compile Include="Assets\assets\Map\Forest Pack\Scripts\ChestDemo.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\assets\AurynSky\Forest Pack\READ ME.txt" />
+    <None Include="Assets\assets\effect\Cartoon FX Remaster\CFXR Assets\Shaders\CFXR_SETTINGS.cginc" />
+    <None Include="Assets\assets\Wizard\Shader\PolyArtMaskTint.shader" />
+    <None Include="Assets\assets\effect\Cartoon FX Remaster\CFXR Assets\Shaders\CFXR.cginc" />
+    <None Include="Assets\assets\effect\Cartoon FX Remaster\CFXR Prefabs\Texts\_Make your own text effect.txt" />
+    <None Include="Assets\assets\effect\Cartoon FX Remaster\CFXR Assets\Shaders\CFXR_PASSES.cginc" />
+    <None Include="Assets\assets\effect\Cartoon FX Remaster\CFXR Assets\Shaders\CFXR_URP.cginc" />
+    <None Include="Assets\assets\Wizard\SRP\HowToTestSRPs.txt" />
+    <None Include="Assets\assets\Map\Forest Pack\READ ME.txt" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -742,9 +751,6 @@
     <Reference Include="Unity.TestTools.CodeCoverage.Editor.OpenCover.Mono.Reflection">
       <HintPath>Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.OpenCover.Mono.Reflection.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.VisualScripting.Flow">
-      <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.Flow.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
     </Reference>
@@ -760,6 +766,9 @@
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.VisualScripting.Flow">
+      <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.Flow.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.VisualScripting.State">
       <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.State.dll</HintPath>
     </Reference>
@@ -771,6 +780,26 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="ToonyColorsPro.Demo.Editor.csproj">
+      <Project>{699C01FB-5DC9-C2CF-8509-3319082176FF}</Project>
+      <Name>ToonyColorsPro.Demo.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="CFXREditor.csproj">
+      <Project>{9A97835A-2CC8-7A57-8FE5-72E66EEC427D}</Project>
+      <Name>CFXREditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="KinoBloom.Runtime.csproj">
+      <Project>{FF9A211C-E669-5261-27A8-182C91D51F64}</Project>
+      <Name>KinoBloom.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="CFXRDemo.csproj">
+      <Project>{9987DF0B-A457-36B2-4AA2-6219AA154285}</Project>
+      <Name>CFXRDemo</Name>
+    </ProjectReference>
+    <ProjectReference Include="CFXRRuntime.csproj">
+      <Project>{EE81186D-E558-FCFB-5C87-60399BF47041}</Project>
+      <Name>CFXRRuntime</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
