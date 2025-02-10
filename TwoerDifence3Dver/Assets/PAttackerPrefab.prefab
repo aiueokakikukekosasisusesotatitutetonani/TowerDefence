@@ -1265,7 +1265,11 @@ GameObject:
   - component: {fileID: 6100980359252498789}
   m_Layer: 0
   m_Name: PAttackerPrefab
+<<<<<<< HEAD
   m_TagString: Player
+=======
+  m_TagString: APlayer
+>>>>>>> origin/main
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1349,16 +1353,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 322c34806e3e94f4fb5d3198ff739766, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
   speed: 3
+=======
+  speed: 2
+>>>>>>> origin/main
   rotationSpeed: 200
   segmentDistances:
   - 2
   - 48
   - 2
+<<<<<<< HEAD
+=======
+  isMove: 0
+>>>>>>> origin/main
   animator: {fileID: 2066896392029128874}
   playerAttackerHp: 100
   playerAttackerPower: 10
   eAttackerScript: {fileID: 3918232601895356288, guid: a39b1fd2b4d98bd41aa26082c24e0509, type: 3}
+<<<<<<< HEAD
+=======
+  eTankScript: {fileID: -2431113098555336708, guid: 77d578731c26c56488e953259f8a630c, type: 3}
+>>>>>>> origin/main
 --- !u!1 &2066896392038628120
 GameObject:
   m_ObjectHideFlags: 0
