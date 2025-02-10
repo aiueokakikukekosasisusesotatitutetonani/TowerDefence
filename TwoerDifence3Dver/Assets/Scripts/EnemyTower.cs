@@ -1,6 +1,7 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;  // UIè¦ç´ ã®ã‚¤ãƒ³ãƒãƒ¼ãƒˆ
 
 public class EnemyTower : MonoBehaviour
 {
@@ -8,18 +9,40 @@ public class EnemyTower : MonoBehaviour
     public float damageInterval = 1f;
     public GameObject enemyTower;
     public GameObject explosion;
+    public GameObject missileExplosion;
 
     public PAttackerScript pAttackerScript;
     public PTankScript pTankScript;
-    private Coroutine damageCoroutine; // ƒ_ƒ[ƒWˆ—‚ÌƒRƒ‹[ƒ`ƒ“‚ğ•Û
+    private Coroutine damageCoroutine; // ãƒ€ãƒ¡ãƒ¼ã‚¸å‡¦ç†ã®ã‚³ãƒ«ãƒ¼ãƒãƒ³ã‚’ä¿æŒ
 
+    // AudioSource
+    public AudioSource explosionSound;
+    public AudioSource sword;
+    public AudioSource punch;
+
+    // UIé–¢é€£
+    public Slider hpSlider;  // HPã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼ã¸ã®å‚ç…§
+
+    // åˆæœŸåŒ–ã¨çˆ†ç™ºã®éè¡¨ç¤º
+    public void Start()
+    {
+        explosion.SetActive(false);
+        missileExplosion.SetActive(false);
+        if (hpSlider != null)
+        {
+            hpSlider.maxValue = towerHp;  // ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼ã®æœ€å¤§å€¤ã‚’ã‚¿ãƒ¯ãƒ¼ã®æœ€å¤§HPã«è¨­å®š
+            hpSlider.value = towerHp;     // åˆæœŸå€¤ã‚’ã‚¿ãƒ¯ãƒ¼ã®ç¾åœ¨ã®HPã«è¨­å®š
+        }
+    }
+
+    // ãƒˆãƒªã‚¬ãƒ¼å†…ã«å…¥ã£ãŸã¨ãã®å‡¦ç†
     public void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("APlayer"))
         {
+            sword.Play();
             pAttackerScript = other.GetComponent<PAttackerScript>();
 
-            // ‚·‚Å‚Éƒ_ƒ[ƒWˆ—‚ª“®‚¢‚Ä‚¢‚È‚¯‚ê‚ÎŠJn
             if (damageCoroutine == null)
             {
                 damageCoroutine = StartCoroutine(ADamageOverTime());
@@ -27,22 +50,33 @@ public class EnemyTower : MonoBehaviour
         }
         else if (other.CompareTag("TPlayer"))
         {
+            punch.Play();
             pTankScript = other.GetComponent<PTankScript>();
 
-            //‚·‚Å‚Éƒ_ƒ[ƒWˆ—‚ª“®‚¢‚Ä‚¢‚È‚¯‚ê‚ÎŠJn
             if (damageCoroutine == null)
             {
-                Debug.Log("Tank‚ªif‚Ì‚È‚©‚É“ü‚è‚Ü‚µ‚½");
                 damageCoroutine = StartCoroutine(TDamageOverTime());
             }
         }
+        else if (other.CompareTag("PlayerMissile"))
+        {
+            explosionSound.Play();
+            StartCoroutine(MissileTakeDamage());
+        }
+        else if (other.CompareTag("PlayerRock"))
+        {
+            explosionSound.Play();
+            StartCoroutine(RockTakeDamage());
+        }
     }
 
+    // ãƒˆãƒªã‚¬ãƒ¼ã‹ã‚‰å‡ºãŸã¨ãã®å‡¦ç†
     public void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("APlayer"))
         {
-            // ƒ_ƒ[ƒW‚ğó‚¯‚é Coroutine ‚ğ’â~
+            sword.Stop();
+
             if (damageCoroutine != null)
             {
                 StopCoroutine(damageCoroutine);
@@ -52,10 +86,9 @@ public class EnemyTower : MonoBehaviour
 
         if (other.CompareTag("TPlayer"))
         {
-            Debug.Log("Object‚ª—£‚ê‚Ü‚µ‚½B");
+            punch.Stop();
 
-            //ƒ_ƒ[ƒW‚ğó‚¯‚éCoroutine‚ğ’â~
-            if(damageCoroutine != null)
+            if (damageCoroutine != null)
             {
                 StopCoroutine(damageCoroutine);
                 damageCoroutine = null;
@@ -65,29 +98,54 @@ public class EnemyTower : MonoBehaviour
 
     private IEnumerator ADamageOverTime()
     {
-        while (towerHp > 0) // HP‚ª0‚É‚È‚é‚Ü‚Åƒ‹[ƒv
+        while (towerHp > 0)
         {
             TowerTakeDamage(pAttackerScript.playerAttackerPower);
-            yield return new WaitForSeconds(damageInterval); // w’èŠÔ‘Ò‚Â
+            yield return new WaitForSeconds(damageInterval);
         }
-        damageCoroutine = null; // ƒRƒ‹[ƒ`ƒ“‚ÌQÆ‚ğƒŠƒZƒbƒg
+        damageCoroutine = null;
     }
 
     private IEnumerator TDamageOverTime()
     {
-        while(towerHp > 0)
+        while (towerHp > 0)
         {
             TowerTakeDamage(pTankScript.playerTackPower);
-            yield return new WaitForSeconds(damageInterval); // w’èŠÔ‘Ò‚Â
+            yield return new WaitForSeconds(damageInterval);
         }
-        Debug.Log("while•¶‚ğ”²‚¯‚Ü‚µ‚½");
         damageCoroutine = null;
+    }
+
+    public IEnumerator RockTakeDamage()
+    {
+        missileExplosion.SetActive(true);
+        towerHp -= 100;
+        UpdateHPUI();  // HPã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’æ›´æ–°
+        if (towerHp <= 0)
+        {
+            TowerBroken();
+        }
+        yield return new WaitForSeconds(1f);
+        missileExplosion.SetActive(false);
+    }
+
+    public IEnumerator MissileTakeDamage()
+    {
+        missileExplosion.SetActive(true);
+        towerHp -= 100;
+        UpdateHPUI();  // HPã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’æ›´æ–°
+        if (towerHp <= 0)
+        {
+            TowerBroken();
+        }
+        yield return new WaitForSeconds(1f);
+        missileExplosion.SetActive(false);
     }
 
     public void TowerTakeDamage(int damage)
     {
         towerHp -= damage;
-        Debug.Log(towerHp);
+        UpdateHPUI();  // HPã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’æ›´æ–°
         if (towerHp <= 0)
         {
             TowerBroken();
@@ -99,6 +157,15 @@ public class EnemyTower : MonoBehaviour
         explosion.SetActive(true);
         Destroy(enemyTower, 1f);
         Debug.Log("YOU WIN");
+    }
+
+    // HPãƒãƒ¼UIã‚’æ›´æ–°ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
+    private void UpdateHPUI()
+    {
+        if (hpSlider != null)
+        {
+            hpSlider.value = towerHp;  // ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼ã®å€¤ã‚’æ›´æ–°
+        }
     }
 
     public void WaitTime()
