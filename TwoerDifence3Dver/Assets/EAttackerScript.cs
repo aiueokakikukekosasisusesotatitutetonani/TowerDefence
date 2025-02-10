@@ -10,15 +10,6 @@ public class EAttackerScript : MonoBehaviour
     private Vector3 startPosition;             // 各セグメントの開始位置
     private bool isTurning = false;            // 回転中フラグ
     private bool isPaused = false;             // 移動を一時停止するフラグ
-<<<<<<< HEAD
-    public Animator animator;                  // animator
-    public int enemyAttackerHp = 100;          // エネミーアタッカーのHP
-    public int enemyAttackerPower = 10;        // エネミーアタッカーの攻撃力
-    private float damageInterval = 1.0f;  // **ダメージを受ける間隔（秒）**
-    private float lastDamageTime = 0f;    // **最後にダメージを受けた時間**
-
-    public PAttackerScript pAttackerScript;
-=======
     public bool isMove = false;                // 移動を再開するメソッドを受け取るフラグ
     public Animator animator;                  // animator
     public int enemyAttackerHp = 100;          // エネミーアタッカーのHP
@@ -29,7 +20,6 @@ public class EAttackerScript : MonoBehaviour
 
     public PAttackerScript pAttackerScript;          // playerのスクリプト
     public PTankScript pTankScript;                  // tankのスクリプト
->>>>>>> origin/main
 
     void Start()
     {
@@ -39,24 +29,15 @@ public class EAttackerScript : MonoBehaviour
 
     void Update()
     {
-<<<<<<< HEAD
-        Debug.Log(isPaused);
-=======
         //Debug.Log(isPaused);
->>>>>>> origin/main
 
         if (isPaused) return; // 一時停止中なら処理しない
 
         if (!isTurning && currentSegment < segmentDistances.Length)
         {
-<<<<<<< HEAD
-            animator.SetBool("isWalk", true); //移動しているとき歩行アニメーションを実行
-            animator.SetBool("isAttack", false); //移動しているとき攻撃アニメーションを無効
-=======
             animator.SetBool("isWalk", true);    //移動しているとき歩行アニメーションを実行
             animator.SetBool("isAttack", false); //移動しているとき攻撃アニメーションを無効
             animator.SetBool("isIdel", false);   //移動しているとき待機アニメーションを無効
->>>>>>> origin/main
 
             float movedDistance = Vector3.Distance(startPosition, transform.position);
             if (movedDistance < segmentDistances[currentSegment] - 0.01f)  // 誤差補正
@@ -112,13 +93,6 @@ public class EAttackerScript : MonoBehaviour
     void EATakeDamage(int damage)
     {
         enemyAttackerHp -= damage;
-<<<<<<< HEAD
-        //Debug.Log("Enemy残りHP:" + enemyAttackerHp);
-        if (enemyAttackerHp <= 0)
-        {
-            Die();
-            pAttackerScript.PAResumeMovement(); // 移動再開
-=======
 
         //Debug.Log(enemyAttackerHp);
 
@@ -126,32 +100,11 @@ public class EAttackerScript : MonoBehaviour
         {
             Die();
             isMove = false;
->>>>>>> origin/main
         }
     }
 
     public void Die()
     {
-<<<<<<< HEAD
-        Destroy(gameObject);
-    }
-
-    public void OnTriggerStay(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            isPaused = true;  // 移動を一時停止
-            animator.SetBool("isWalk", false); //移動しているとき歩行アニメーションを無効
-            animator.SetBool("isAttack", true); //移動しているとき攻撃アニメーションを実行
-
-            // **一定時間ごとにダメージを与える**
-            if (Time.time - lastDamageTime >= damageInterval)
-            {
-                EATakeDamage(pAttackerScript.playerAttackerPower);
-                lastDamageTime = Time.time; // **ダメージを受けた時間を更新**
-            }
-        }
-=======
         transform.Translate(10f, 0f, 0f);
         Destroy(gameObject, 1f);
     }
@@ -265,22 +218,15 @@ public class EAttackerScript : MonoBehaviour
 
             EAResumeMovement(); //通常移動を開始
         }
->>>>>>> origin/main
     }
 
     public void EAResumeMovement()
     {
-<<<<<<< HEAD
-        isPaused = false; // 移動を再開
-        animator.SetBool("isWalk", true); //移動しているとき歩行アニメーションを実行
-        animator.SetBool("isAttack", false); //移動しているとき攻撃アニメーションを無効
-=======
         //Debug.Log("Enemyの移動再開");
         isPaused = false; // 移動を再開
         //Debug.Log(isPaused);
         animator.SetBool("isWalk", true);    //移動しているとき歩行アニメーションを実行
         animator.SetBool("isAttack", false); //移動しているとき攻撃アニメーションを無効
         animator.SetBool("isIdel", false);   //移動しているとき待機アニメーションを無効
->>>>>>> origin/main
     }
 }

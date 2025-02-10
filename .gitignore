@@ -1,3 +1,6 @@
  
 TwoerDifence3Dver/Library/
 .editorconfig
+TwoerDifence3Dver/obj/
+TwoerDifence3Dver/Temp/
+TwoerDifence3Dver/Logs/

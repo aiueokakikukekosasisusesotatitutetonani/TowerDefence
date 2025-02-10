@@ -1266,11 +1266,7 @@ GameObject:
   - component: {fileID: 3918232601895356288}
   m_Layer: 0
   m_Name: EAttackerPrefab
-<<<<<<< HEAD
-  m_TagString: Enemy
-=======
   m_TagString: AEnemy
->>>>>>> origin/main
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1373,19 +1369,12 @@ MonoBehaviour:
   - 2
   - 48
   - 2
-<<<<<<< HEAD
-  animator: {fileID: 2066896392029128874}
-  enemyAttackerHp: 100
-  enemyAttackerPower: 20
-  pAttackerScript: {fileID: 6100980359252498789, guid: 45288819fde2143449a96207b14db0bb, type: 3}
-=======
   isMove: 0
   animator: {fileID: 2066896392029128874}
   enemyAttackerHp: 100
   enemyAttackerPower: 10
   pAttackerScript: {fileID: 6100980359252498789, guid: 45288819fde2143449a96207b14db0bb, type: 3}
   pTankScript: {fileID: -4324548615460210752, guid: 6bbfea6690ef7724ba495c866081f855, type: 3}
->>>>>>> origin/main
 --- !u!1 &2066896392038628120
 GameObject:
   m_ObjectHideFlags: 0

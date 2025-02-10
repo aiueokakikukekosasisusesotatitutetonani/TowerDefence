@@ -12,8 +12,6 @@ TagManager:
   - AttackerEnemy
   - TankEnemy
   - WizardEnemy
-<<<<<<< HEAD
-=======
   - PlayerTower
   - EnemyTower
   - FxTemporaire
@@ -21,7 +19,6 @@ TagManager:
   - TPlayer
   - AEnemy
   - TEnemy
->>>>>>> origin/main
   layers:
   - Default
   - TransparentFX
