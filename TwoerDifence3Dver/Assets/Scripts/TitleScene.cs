@@ -18,6 +18,8 @@ public class TitleScene : MonoBehaviour
 
     void Start()
     {
+        Time.timeScale = 1;  //タイムスケールを１にして時間を進める
+
         startText.SetActive(true);
         menu.SetActive(false);
     }

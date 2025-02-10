@@ -92,7 +92,6 @@ public class GameManager : MonoBehaviour
 
         missileReadyImageP.gameObject.SetActive(false);
 
-        StartCoroutine(MissilePreparationTimer());
 
         DifficultyMissileWizardTime(); //敵魔法使いとミサイルのチャージ速度
 
@@ -201,7 +200,7 @@ public class GameManager : MonoBehaviour
 
     public void TitleOnClick()
     {
-        
+        //Time.timeScale = 1;  //移行前にタイムスケールを戻す
         SceneManager.LoadScene("TitleScene");
     }
 
@@ -299,6 +298,11 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator EnemyAutoSpawn()   //すべてのエネミーをオートで湧かせる
     {
+        while (!isEnemySpawn)
+        {
+            yield return null;
+        }
+
         while (true)
         {
             if (currentEnemyUnits < maxEnemyUnits && !enemyNotSpawn.notSpawn && isEnemySpawn) // 3体未満ならスポーン可能
@@ -426,13 +430,17 @@ public class GameManager : MonoBehaviour
 
     // 1分ごとにミサイルを生成（ゲーム開始直後はミサイルなし）
     IEnumerator MissileSpawnRoutine()//味方
-    {
-        yield return new WaitForSeconds(25f); // ゲーム開始後 1 分待つ
-        while (true)
+    {  
+        do
         {
+            while(currentMissileP != null)
+            {
+                yield return null;
+            }
+            yield return new WaitForSeconds(25f); // ゲーム開始後 1 分待つ
             SpawnMissile();
-            yield return new WaitForSeconds(25f); // 1分ごとに生成
-        }
+        } while (true) ;
+
     }
 
     // ミサイルの生成
@@ -471,20 +479,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
-    // ミサイル準備タイマー
-    private System.Collections.IEnumerator MissilePreparationTimer()//味方
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(missileReadyTimeP); // 1分待機
-            isMissileReadyP = true; // ミサイル準備完了
-            missileReadyImageP.gameObject.SetActive(true); // 画像を表示
-            //Debug.Log("ミサイル準備完了！"); // ログ出力
-        }
-    }
-
-
 
     IEnumerator MissileSpawnRoutineE()//敵
     {

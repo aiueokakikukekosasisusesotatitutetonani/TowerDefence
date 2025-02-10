@@ -30,7 +30,7 @@ public class EAttackerScript : MonoBehaviour
         //swordEffect.SetActive(false);
         //dieEffect.SetActive(false);
 
-        //soundManager = FindAnyObjectByType<SoundManager>();
+        soundManager = FindAnyObjectByType<SoundManager>();
         //swordEffect = FindAnyObjectByType<GameObject>();
         animator = GetComponent<Animator>(); // animatorのコンポーネントを取得
         startPosition = transform.position;  // 初期位置を設定
