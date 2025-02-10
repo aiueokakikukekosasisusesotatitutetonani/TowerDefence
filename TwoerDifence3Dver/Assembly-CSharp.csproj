@@ -57,22 +57,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\assets\Map\Forest Pack\Scripts\MaterialMover.cs" />
-    <Compile Include="Assets\PTankScript.cs" />
-    <Compile Include="Assets\Scripts\EnemyTrigger.cs" />
-    <Compile Include="Assets\Scripts\EnemyParameter.cs" />
+    <Compile Include="Assets\Scripts\PTankScript.cs" />
+    <Compile Include="Assets\Scripts\EnemyWizard.cs" />
+    <Compile Include="Assets\Scripts\TitleScene.cs" />
+    <Compile Include="Assets\Scripts\PlayerBarrier.cs" />
+    <Compile Include="Assets\Scripts\PlayerMissaile.cs" />
+    <Compile Include="Assets\Scripts\DifficultyManager.cs" />
+    <Compile Include="Assets\Scripts\EnemyRock.cs" />
+    <Compile Include="Assets\Scripts\EnemyBarrier.cs" />
     <Compile Include="Assets\assets\Map\Forest Pack\Scripts\WheelController.cs" />
     <Compile Include="Assets\Scripts\EnemyTower.cs" />
-    <Compile Include="Assets\Scripts\PlayerTrigger.cs" />
-    <Compile Include="Assets\PAttackerScript.cs" />
+    <Compile Include="Assets\Scripts\PAttackerScript.cs" />
+    <Compile Include="Assets\Scripts\EnemyNotSpawn.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
-    <Compile Include="Assets\ETankScript.cs" />
+    <Compile Include="Assets\Scripts\ETankScript.cs" />
+    <Compile Include="Assets\Scripts\PlayerWizard.cs" />
     <Compile Include="Assets\assets\Map\Forest Pack\Scripts\Rotator.cs" />
-    <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\PlayerTower.cs" />
-    <Compile Include="Assets\Scripts\PlayerParameter.cs" />
-    <Compile Include="Assets\EAttackerScript.cs" />
+    <Compile Include="Assets\Scripts\PlayerRock.cs" />
+    <Compile Include="Assets\Scripts\PlayerNotSpawn.cs" />
+    <Compile Include="Assets\Scripts\EAttackerScript.cs" />
     <Compile Include="Assets\assets\Map\Forest Pack\Scripts\ChestDemo.cs" />
-    <Compile Include="Assets\Scripts\Enemy.cs" />
+    <Compile Include="Assets\Scripts\EnemyMissile.cs" />
+    <Compile Include="Assets\Scripts\SoundManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\assets\effect\Cartoon FX Remaster\CFXR Assets\Shaders\CFXR_SETTINGS.cginc" />

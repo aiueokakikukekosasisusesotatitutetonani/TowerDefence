@@ -19,6 +19,14 @@ TagManager:
   - TPlayer
   - AEnemy
   - TEnemy
+  - PlayerMissile
+  - EnemyMissile
+  - EnemyNotSpawnAria
+  - PlayerNotSpawnAria
+  - PlayerRock
+  - EnemyRock
+  - PlayerBarrier
+  - EnemyBarrier
   layers:
   - Default
   - TransparentFX
